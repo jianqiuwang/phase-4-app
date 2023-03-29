@@ -4,6 +4,7 @@ class CreateMovies < ActiveRecord::Migration[6.1]
       t.string :title
       t.string :image
       t.integer :price
+      t.text :description
       t.timestamps
     end
   end
