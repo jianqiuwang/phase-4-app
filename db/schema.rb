@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2023_03_29_184522) do
     t.string "title"
     t.string "image"
     t.integer "price"
+    t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -24,7 +25,6 @@ ActiveRecord::Schema.define(version: 2023_03_29_184522) do
     t.string "user_name"
     t.integer "score"
     t.string "comment"
-    t.text "description"
     t.integer "movie_id"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
