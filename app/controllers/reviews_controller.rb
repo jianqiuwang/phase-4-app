@@ -18,6 +18,15 @@ class ReviewsController < ApplicationController
     else
         render json: review.errors, status: :unprocessable_entity
     end
+    
+    def update
+        review = Review.find(params[:id])
+        if review.update(review_params)
+          render json: review, status: :ok, include: [:movie]
+        else
+          render json: review.errors, status: :unprocessable_entity
+        end
+    end
   end
 
 
