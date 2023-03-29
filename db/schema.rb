@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2023_03_29_184522) do
     t.string "comment"
     t.integer "movie_id"
     t.integer "user_id"
+    t.integer "likes", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
