@@ -13,16 +13,26 @@
 ActiveRecord::Schema.define(version: 2023_03_29_184522) do
 
   create_table "movies", force: :cascade do |t|
+    t.string "title"
+    t.string "image"
+    t.integer "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "reviews", force: :cascade do |t|
+    t.string "user_name"
+    t.integer "score"
+    t.string "comment"
+    t.text "description"
+    t.integer "movie_id"
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "user_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
