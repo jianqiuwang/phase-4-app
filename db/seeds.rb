@@ -12,8 +12,8 @@ movie2 = Movie.create(title: "The Godfather", image: "https://m.media-amazon.com
 movie3 = Movie.create(title: "The Dark Knight", image: "https://soundvapors.com/wp-content/uploads/2020/06/tdk-1024x1024.jpg", price: 15, description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.")
 
 # Create some users
-user1 = User.create(user_name: "john_doe")
-user2 = User.create(user_name: "jane_smith")
+user1 = User.create(user_name: "john_doe", password: "password123")
+user2 = User.create(user_name: "jane_smith", password: "password456")
 
 # Create some reviews
 review1 = Review.create(user_name: "john_doe", score: 9, comment: "This movie was amazing!", likes: 3, movie: movie1, user: user1)
