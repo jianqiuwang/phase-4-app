@@ -1,11 +1,21 @@
 import React from 'react';
+import { BrowserRouter,Route, Switch } from "react-router-dom";
 import LoginForm from './LoginForm';
+import SignUpForm from './SignUpForm';
+import Movies from './Movies';
+import Navbar from './Navbar';
 
-const App = () => {
+function App() {
+  
   return (
-    <div>
-      <LoginForm />
-    </div>
+    <BrowserRouter>
+     <Navbar />
+      <Switch>
+        <Route exact path="/" component={Movies} />
+        <Route path="/signup" component={SignUpForm} />
+        <Route path="/login" component={LoginForm} />
+      </Switch>
+    </BrowserRouter>
   );
 };
 

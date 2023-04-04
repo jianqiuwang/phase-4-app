@@ -1,0 +1,48 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #212121;
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-item {
+    margin-right: 1rem;
+  }
+  
+  .nav-link {
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .login-form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-button,
+  .signup-button {
+    margin-left: 1rem;
+    cursor: pointer;
+  }
+  
