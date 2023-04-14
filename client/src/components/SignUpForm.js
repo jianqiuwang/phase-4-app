@@ -44,7 +44,7 @@ function SignUpForm({ onLogin }) {
       <div className="signup-form-container">
       {accountCreated ? (
         <p className="success-message">
-          Account successfully created! You are now logged in.
+          Account successfully created! You can now logged in.
         </p>
       ) : (
         <>

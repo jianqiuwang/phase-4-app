@@ -91,7 +91,7 @@ function Movies() {
         }
         return movie;
       });
-      console.log("Increasing likes for review:", reviewId);
+      console.log(reviewId);
       // Update the state with the new movies data
       setUpdatedMovies(updatedMoviesData);
   };
@@ -150,7 +150,7 @@ function Movies() {
       }
       return m;
     });
-    console.log('Updated movies data:', updatedMoviesData);
+    console.log(updatedMoviesData);
     setUpdatedMovies(updatedMoviesData);
   }
   
