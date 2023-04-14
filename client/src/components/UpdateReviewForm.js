@@ -6,7 +6,6 @@ function UpdateReviewForm({ onUpdateReview, review, reviewKey }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("Submitting updated review...");
     fetch(`/reviews/${review.id}`, {
       method: "PATCH",
       headers: {

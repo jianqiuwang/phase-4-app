@@ -6,10 +6,6 @@ function SignUpForm({ onLogin }) {
   const [password, setPassword] = useState('');
   const [accountCreated, setAccountCreated] = useState(false);
 
-  function getCSRFToken() {
-    const metaTag = document.querySelector('meta[name="csrf-token"]');
-    return metaTag ? metaTag.getAttribute('content') : '';
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,8 +13,7 @@ function SignUpForm({ onLogin }) {
     fetch('http://localhost:3000/signup', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': getCSRFToken(),
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username: username, password: password }),
     })
