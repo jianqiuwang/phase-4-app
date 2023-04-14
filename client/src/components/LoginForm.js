@@ -2,15 +2,39 @@ import React, { useState } from 'react';
 import './LoginForm.css';
 import { useHistory } from 'react-router-dom';
 
- function LoginForm () {
+ function LoginForm ({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ user_name: username, password: password });
+    fetch("http://localhost:3000/login", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Invalid credentials");
+          }
+        })
+        .then((user) => {
+          // Call the onLogin function passed as a prop from App.js
+          onLogin(user);
+          // Redirect to the main page
+          history.push("/");
+        })
+        .catch((error) => {
+          console.error("Error during login:", error);
+          // Handle the error, e.g., show an error message
+        });
   };
 
   const handleSignUpClick = () => {

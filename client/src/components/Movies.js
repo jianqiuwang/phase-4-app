@@ -1,18 +1,80 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from './App';
 import './Movies.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header';
+import UpdateReviewForm from './UpdateReviewForm';
+import CreateReviewForm from './CreateReviewForm';
 
 function Movies() {
+  const user = useContext(UserContext);
+  console.log(user)
   const [updatedMovies, setUpdatedMovies] = useState([]);
   const [search, setSearch]=useState("")
-
+//   editingReviewId: This state variable is used to keep track of the review that is currently being edited by the user. When a user clicks to edit a review, the editingReviewId is set to the ID of that review. If no review is being edited, editingReviewId is set to null.
+  const [editingReviewId, setEditingReviewId] = useState(null);
+//   addingReviewMovieId: This state variable is used to keep track of the movie for which the user is currently adding a review. When a user clicks to add a review for a movie, the addingReviewMovieId is set to the ID of that movie. If no movie is being added a review for, addingReviewMovieId is set to null.
+  const [addingReviewMovieId, setAddingReviewMovieId] = useState(null);
   useEffect(() => {
-    fetch('http://localhost:3000/movies')
+    fetch('/movies')
       .then((resp) => resp.json())
-      .then((movies) => setUpdatedMovies(movies));
+      .then((movies) => {
+        const uniqueMovies = Array.from(
+          new Map(movies.map((movie) => [movie.id, movie])).values()
+        );
+        setUpdatedMovies(uniqueMovies);
+      });
   }, []);
+
+
+  function handleAddReview(movie, newReview) {
+    console.log('Submitting review:', newReview);
+    fetch('/reviews', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...newReview, movie_id: movie.id, user_id: user.id }),
+    })
+      .then((response) => response.json())
+      .then((newReviewData) => {
+        const updatedMoviesData = updatedMovies.map((m) => {
+          if (m.id === movie.id) {
+            return {
+              ...movie,
+              reviews: movie.reviews.concat(newReviewData),
+            };
+          }
+          return m;
+        });
+        setUpdatedMovies(updatedMoviesData);
+        setAddingReviewMovieId(null);
+      });
+  }
+  
+  
+  const handleDelete = (movieId, reviewId) => {
+    fetch(`/reviews/${reviewId}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (res.ok) {
+          // Remove the deleted review from the state
+          const updatedMoviesData = updatedMovies.map((movie) => {
+            if (movie.id === movieId) {
+              return {
+                ...movie,
+                reviews: movie.reviews.filter((review) => review.id !== reviewId),
+              };
+            }
+            return movie;
+          });
+          setUpdatedMovies(updatedMoviesData);
+        }
+      });
+  };
+
 
   const increaseLikes = (movieId, reviewId) => {
     const updatedMoviesData = updatedMovies.map((movie) => {
@@ -29,16 +91,73 @@ function Movies() {
         }
         return movie;
       });
-      console.log(updatedMovies)
+      console.log("Increasing likes for review:", reviewId);
       // Update the state with the new movies data
       setUpdatedMovies(updatedMoviesData);
   };
 
   const MoviesDisplay=updatedMovies.filter((movie)=>movie.title.toLowerCase().includes(search.toLowerCase()))
 
+  function renderReview(movie, review) {
+    // console.log(user)
+    // console.log(review)
+    return review.id === editingReviewId ? (
+      <UpdateReviewForm
+        key={review.id} 
+        review={review}
+        onUpdateReview={(updatedReview) => {
+          updateMovieReviews(movie, updatedReview);
+          setEditingReviewId(null);
+        }}
+      />
+    ) : (
+      <>
+        <p>
+          <strong>{review.username}</strong> - {review.score}/10
+        </p>
+        <p>{review.comment}</p>
+        <p>
+          Likes: {review.likes}{" "}
+          <button
+            className="like-button"
+            onClick={() => increaseLikes(movie.id, review.id)}
+          >
+            <FontAwesomeIcon icon={faThumbsUp} />
+          </button>
+          {user && user.id === review.user_id && (
+            <>
+                <button onClick={() => handleDelete(movie.id, review.id)}>
+                Delete
+                </button>
+                <button onClick={() => setEditingReviewId(review.id)}>
+                Edit
+                </button>
+            </>
+          )}
+        </p>
+      </>
+    );
+  }
+  
+  
+  function updateMovieReviews(movie, updatedReview) {
+    const updatedMoviesData = updatedMovies.map((m) => {
+      if (m.id === movie.id) {
+        return {
+          ...movie,
+          reviews: movie.reviews.filter((r) => r.id !== updatedReview.id).concat(updatedReview),
+        };
+      }
+      return m;
+    });
+    console.log('Updated movies data:', updatedMoviesData);
+    setUpdatedMovies(updatedMoviesData);
+  }
+  
+
   return (
     <div className="container">
-      <Header onSearch={setSearch}/>
+      <Header onSearch={setSearch} />
       <div className="movies-list">
         {MoviesDisplay.map((movie) => (
           <div key={movie.id} className="movie-card">
@@ -48,24 +167,30 @@ function Movies() {
             <p>{movie.description}</p>
             <div className="reviews">
               <h3>Reviews</h3>
-              {movie.reviews.map((review) => (
-                <div key={review.id} className="review">
-                  <p><strong>{review.user_name}</strong> - {review.score}/10</p>
-                  <p>{review.comment}</p>
-                  <p>
-                    Likes: {review.likes}{' '}
-                    <button className="like-button" onClick={() => increaseLikes(movie.id, review.id)}>
-                      <FontAwesomeIcon icon={faThumbsUp} />
-                    </button>
-                  </p>
-                </div>
-              ))}
+              {user && (
+                addingReviewMovieId === movie.id ? (
+                <CreateReviewForm
+                movie={movie}
+                onAddReview={(newReview) => handleAddReview(movie, newReview)}
+                />
+                ) : (
+                <button onClick={() => setAddingReviewMovieId(movie.id)}>Add Review</button>
+                )
+                )}
+              {movie.reviews.map((review) => {
+                return (
+                    <div key={review.id} className="review">
+                    {renderReview(movie, review)}
+                    </div>
+                        );
+                })}
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+  
 };
 
 export default Movies;

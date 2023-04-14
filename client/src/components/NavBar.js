@@ -2,7 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({onLogout}) => {
+    const handleLogout = (e) => {
+    e.preventDefault();
+    onLogout();
+  };
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
@@ -19,6 +23,11 @@ const Navbar = () => {
         <li className="nav-item">
           <NavLink to="/signup" activeClassName="active" className="nav-link">
             Sign Up
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/logout" className="nav-link logout-button" onClick={handleLogout}>
+            Logout
           </NavLink>
         </li>
       </ul>
