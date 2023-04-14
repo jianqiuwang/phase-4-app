@@ -23,15 +23,8 @@ function SignUpForm({ onLogin }) {
           onLogin(user);
           setAccountCreated(true);
           });
-        } else {
-          response.json().then((data) => {
-            alert(`Error: ${data.message}`);
-          });
         }
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
   };
 
   return (
