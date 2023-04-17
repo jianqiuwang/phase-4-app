@@ -11,7 +11,7 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    user = User.find(params[:user_id]) # Find the user based on the user_id in the params
+    user = User.find(params[:user_id])
     review = Review.new(review_params) # Initialize a new review with the permitted parameters
     review.username = user.username # Set the review's username to the user's username
   

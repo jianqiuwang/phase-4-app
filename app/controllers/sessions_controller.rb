@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+    # This action is used to create a new session, often during the login process. It verifies the user's credentials (e.g., username and password), creates a new session, and stores the user's ID in the session data.
     def create
         user = User.find_by(username: params[:username])
         if user&.authenticate(params[:password])
@@ -9,6 +10,7 @@ class SessionsController < ApplicationController
         end
     end
 
+    # This action is used to end a session, often during the logout process. It deletes the session data and removes the user's ID from the session, effectively logging the user out.
     def destroy
         if session[:user_id]
             session.delete :user_id

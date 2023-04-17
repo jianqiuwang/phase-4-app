@@ -12,7 +12,6 @@ class UsersController < ApplicationController
 
     def show
         current_user = User.find_by(id: session[:user_id])
-        puts "Current User: #{current_user.inspect}"
         render json: current_user
     end
     

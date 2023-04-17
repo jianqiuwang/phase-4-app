@@ -37,7 +37,6 @@ function App() {
       .then((user) => {
         // Set the user state with the fetched user information
         setUser(user);
-        console.log(user); // Add this line
       })
       .catch((error) => {
         console.error(error);

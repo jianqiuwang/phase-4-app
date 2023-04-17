@@ -20,9 +20,13 @@ function Movies() {
     fetch('/movies')
       .then((resp) => resp.json())
       .then((movies) => {
-        const uniqueMovies = Array.from(
-          new Map(movies.map((movie) => [movie.id, movie])).values()
-        );
+        const uniqueMoviesObj = {};
+  
+        movies.forEach((movie) => {
+          uniqueMoviesObj[movie.id] = movie;
+        });
+  
+        const uniqueMovies = Object.values(uniqueMoviesObj);
         setUpdatedMovies(uniqueMovies);
       });
   }, []);
@@ -65,6 +69,7 @@ function Movies() {
             if (movie.id === movieId) {
               return {
                 ...movie,
+                //updates the reviews property of the new movie object. It uses the filter() method to create a new array containing only the reviews that don't have the same ID as the deleted review (reviewId).
                 reviews: movie.reviews.filter((review) => review.id !== reviewId),
               };
             }
@@ -103,7 +108,6 @@ function Movies() {
     // console.log(review)
     return review.id === editingReviewId ? (
       <UpdateReviewForm
-        key={review.id} 
         review={review}
         onUpdateReview={(updatedReview) => {
           updateMovieReviews(movie, updatedReview);
