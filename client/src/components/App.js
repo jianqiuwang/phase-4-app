@@ -1,13 +1,12 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter,Route, Switch, useHistory } from "react-router-dom";
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 import Movies from './Movies';
 import Navbar from './Navbar';
+import UserContext from '../context/user';
 
-const UserContext = createContext(null);
 
-export { UserContext };
 function App() {
 
   const [user, setUser] = useState(null);
