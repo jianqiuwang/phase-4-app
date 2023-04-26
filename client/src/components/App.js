@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter,Route, Switch, useHistory } from "react-router-dom";
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
+import NewMovieForm from './NewMovieForm';
 import Movies from './Movies';
 import Navbar from './Navbar';
 import UserContext from '../context/user';
-
 
 function App() {
 
@@ -55,6 +55,9 @@ function App() {
         </Route>
         <Route path="/login">
           <LoginForm onLogin={setUser} />
+        </Route>
+        <Route path="/add-movie">
+        <NewMovieForm />
         </Route>
       </Switch>
     </BrowserRouter>

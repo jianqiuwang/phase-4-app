@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({onLogout}) => {
+const Navbar = ({ user, onLogout}) => {
     const handleLogout = (e) => {
     e.preventDefault();
     onLogout();
@@ -29,6 +29,20 @@ const Navbar = ({onLogout}) => {
           <NavLink to="/logout" className="nav-link logout-button" onClick={handleLogout}>
             Logout
           </NavLink>
+        </li>
+        <li className="nav-item">
+        <NavLink 
+          to={user ? "/add-movie" : ""}
+          activeClassName="active"
+          className="nav-link"
+          onClick={() => {
+            if (!user) {
+            alert("Please login to create a new movie.");
+            }
+          }}
+          >
+             Add New Movie
+        </NavLink>
         </li>
       </ul>
     </nav>

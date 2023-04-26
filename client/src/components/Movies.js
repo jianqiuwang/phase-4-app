@@ -7,6 +7,7 @@ import Header from './Header';
 import UpdateReviewForm from './UpdateReviewForm';
 import CreateReviewForm from './CreateReviewForm';
 
+
 function Movies() {
   const user = useContext(UserContext);
   console.log(user)
@@ -16,6 +17,8 @@ function Movies() {
   const [editingReviewId, setEditingReviewId] = useState(null);
 //   addingReviewMovieId: This state variable is used to keep track of the movie for which the user is currently adding a review. When a user clicks to add a review for a movie, the addingReviewMovieId is set to the ID of that movie. If no movie is being added a review for, addingReviewMovieId is set to null.
   const [addingReviewMovieId, setAddingReviewMovieId] = useState(null);
+  const [movies, setMovies] = useState([]);
+
   useEffect(() => {
     fetch('/movies')
       .then((resp) => resp.json())
