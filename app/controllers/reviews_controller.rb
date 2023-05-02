@@ -15,7 +15,6 @@ class ReviewsController < ApplicationController
   def create
     user = User.find(params[:user_id])
     review = Review.new(review_params) 
-    review.username = user.username # Set the review's username to the user's username
   
     if review.save # Save the review to the database
       render json: review, status: :created, include: [:movie]
