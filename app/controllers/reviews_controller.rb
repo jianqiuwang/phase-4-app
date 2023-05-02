@@ -13,9 +13,9 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    user = User.find(params[:user_id])
-    review = Review.new(review_params) 
-  
+    movie = Movie.find(params[:movie_id])
+    user = User.find(params[:user_id]) 
+    review = movie.reviews.new(score: review_params[:score], comment: review_params[:comment], user: user)
     if review.save # Save the review to the database
       render json: review, status: :created, include: [:movie]
     else
@@ -45,7 +45,7 @@ class ReviewsController < ApplicationController
 
   private
   def review_params
-    params.require(:review).permit(:score, :comment, :user_id, :movie_id)
+    params.require(:review).permit(:score, :comment)
   end
 
   def render_not_found

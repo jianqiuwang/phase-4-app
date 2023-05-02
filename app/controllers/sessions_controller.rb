@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
         end
     end
 
-    # This action is used to end a session, often during the logout process. It deletes the session data and removes the user's ID from the session, effectively logging the user out.
+    # This action is used to end a session, often during the logout process. It deletes the session data and removes the user's ID from the session.
     def destroy
         if session[:user_id]
             session.delete :user_id
