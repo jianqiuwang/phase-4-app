@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 function LoginForm({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); 
   const history = useHistory();
 
   const handleSubmit = (event) => {
@@ -20,6 +21,10 @@ function LoginForm({ onLogin }) {
       .then((response) => {
         if (response.ok) {
           return response.json();
+        }else{
+          return response.json().then((json)=>{
+            throw new Error(json.errors.join(", "));
+          })
         }
       })
       .then((user) => {
@@ -29,6 +34,9 @@ function LoginForm({ onLogin }) {
           // Redirect to the main page
           history.push("/");
         }
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
       });
   };
 
@@ -38,6 +46,11 @@ function LoginForm({ onLogin }) {
 
   return (
     <div className="login-container">
+       {errorMessage && (
+        <div className="error-message">
+          {errorMessage}
+        </div>
+      )}
       <h1>Login</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="input-group">

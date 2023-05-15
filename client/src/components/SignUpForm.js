@@ -5,7 +5,7 @@ function SignUpForm({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [accountCreated, setAccountCreated] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState(''); 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,13 +23,25 @@ function SignUpForm({ onLogin }) {
           onLogin(user);
           setAccountCreated(true);
           });
+        }else{
+          return response.json().then((json) => {
+            throw new Error(json.errors.join(", "));
+          })
         }
       })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
   };
 
   return (
     <div className="signup-container">
       <div className="signup-form-container">
+      {errorMessage && (
+        <div className="error-message">
+          {errorMessage}
+        </div>
+      )}
       {accountCreated ? (
         <p className="success-message">
           Account successfully created! You can now log in.

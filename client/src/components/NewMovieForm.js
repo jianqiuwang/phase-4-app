@@ -7,6 +7,7 @@ function NewMovieForm() {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+  const [error, setError] = useState('');
   const history = useHistory();
 
   function handleSubmit(event) {
@@ -38,12 +39,14 @@ function NewMovieForm() {
       })
     //   The catch statement allows you to define a block of code to be executed, if an error occurs in the try block.
       .catch((error) => {
+        setError(error.message)
         console.error("Error:", error);
       });
   };
 
   return (
     <div className="add-movie-container">
+        {error && <div className="error-message">{error}</div>}
       <div className="add-movie-form-container">
         <div className="add-movie-form-wrapper">
           <form onSubmit={handleSubmit} className="add-movie-form">

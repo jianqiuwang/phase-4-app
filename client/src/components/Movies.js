@@ -109,14 +109,17 @@ function Movies() {
   function renderReview(movie, review) {
     // console.log(user)
     // console.log(review)
+    // tracks which review is currently being edited.
     return review.id === editingReviewId ? (
       <UpdateReviewForm
         review={review}
         onUpdateReview={(updatedReview) => {
           updateMovieReviews(movie, updatedReview);
+          //indicating that there is no current review being edited
           setEditingReviewId(null);
         }}
       />
+      //If the review is not being edited
     ) : (
       <>
         <p>
